@@ -3,8 +3,16 @@
 
 #include "mini/ini.h"
 #include <windows.h>
+#include <algorithm>
+#include <cstdarg>
 #include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <functional>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 enum class LogLevel
