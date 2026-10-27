@@ -93,7 +93,7 @@ DWORD WINAPI InitThread(LPVOID lpParam)
 {
   SetupD3DCompilerProxy();
 
-  remove("sekirofpsimgui.log");
+  remove("SekiroFPSUnlockAndMoreNative.log");
   LogMessage(LogLevel::Info, false, "Sekiro FPS Unlock And More Native v%s log initialized.", PROJECT_VERSION_STRING);
 
   MH_Initialize();

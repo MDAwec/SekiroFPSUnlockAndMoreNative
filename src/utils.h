@@ -35,7 +35,7 @@ void LogMessage(LogLevel level, bool showMessage, const char *err, ...);
 void SetupD3DCompilerProxy();
 void InstallCrashLogger();
 
-inline mINI::INIFile ini("sekiroimgui.ini");
+inline mINI::INIFile ini("SekiroFPSUnlockAndMoreNative.ini");
 inline mINI::INIStructure config;
 
 template <typename T>

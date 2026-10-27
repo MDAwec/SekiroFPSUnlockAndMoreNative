@@ -274,7 +274,7 @@ void LogMessage(LogLevel level, bool showMessage, const char *err, ...)
   va_end(ArgList);
 
   FILE *logFile;
-  fopen_s(&logFile, "sekirofpsimgui.log", "a");
+  fopen_s(&logFile, "SekiroFPSUnlockAndMoreNative.log", "a");
   if (logFile)
   {
     time_t now = time(NULL);

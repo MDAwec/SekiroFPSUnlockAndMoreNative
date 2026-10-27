@@ -123,30 +123,43 @@ static bool IsGameWindow(HWND hWnd)
 
 static bool BorderlessCover() { return INITIALIZED && BORDERLESS_ENABLED && !FULLSCREEN_STATE; }
 
-// Remembers the size the game asked for as the client size and keeps the window covering the screen.
-static BOOL CoverScreen(HWND hWnd, HWND after, int cx, int cy, UINT flags)
+// A resolution change: the game resizes its window and reads the client size back. The window is a plain
+// window of the requested size meanwhile (no faked client size). The size is applied as width+1, height+1
+// first and then as requested, so the window always changes size, also when the requested resolution is the
+// one it already has. The next frame ApplyBorderlessPatch remembers the resulting client size and covers the
+// screen again.
+static bool resizing;
+
+static bool BeginResolutionChange(HWND hWnd)
 {
-  RECT frame = {};
-  AdjustWindowRectEx(&frame, (DWORD)GetWindowLongPtr(hWnd, GWL_STYLE), FALSE, (DWORD)GetWindowLongPtr(hWnd, GWL_EXSTYLE));
-  virtualWidth = cx - (frame.right - frame.left);
-  virtualHeight = cy - (frame.bottom - frame.top);
-  return fnSetWindowPos(hWnd, after, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), flags & ~SWP_NOMOVE);
+  if (resizing || !IsGameWindow(hWnd) || !BorderlessCover())
+    return false;
+  virtualWidth = virtualHeight = 0;
+  return true;
 }
 
 static BOOL WINAPI DetourSetWindowPos(HWND hWnd, HWND after, int x, int y, int cx, int cy, UINT flags)
 {
-  if (IsGameWindow(hWnd) && BorderlessCover() && !(flags & SWP_NOSIZE))
-    return CoverScreen(hWnd, after, cx, cy, flags);
-  return fnSetWindowPos(hWnd, after, x, y, cx, cy, flags);
+  if ((flags & SWP_NOSIZE) || !BeginResolutionChange(hWnd))
+    return fnSetWindowPos(hWnd, after, x, y, cx, cy, flags);
+
+  resizing = true;
+  fnSetWindowPos(hWnd, after, x, y, cx + 1, cy + 1, flags);
+  BOOL result = fnSetWindowPos(hWnd, after, x, y, cx, cy, flags);
+  resizing = false;
+  return result;
 }
 
-// The game resizes its window with MoveWindow as well. When the size already is the screen size nothing
-// changes for the window, so the requested size must be remembered here or the game never sees it applied.
 static BOOL WINAPI DetourMoveWindow(HWND hWnd, int x, int y, int cx, int cy, BOOL repaint)
 {
-  if (IsGameWindow(hWnd) && BorderlessCover())
-    return CoverScreen(hWnd, nullptr, cx, cy, SWP_NOZORDER | SWP_NOACTIVATE | (repaint ? 0 : SWP_NOREDRAW));
-  return fnMoveWindow(hWnd, x, y, cx, cy, repaint);
+  if (!BeginResolutionChange(hWnd))
+    return fnMoveWindow(hWnd, x, y, cx, cy, repaint);
+
+  resizing = true;
+  fnMoveWindow(hWnd, x, y, cx + 1, cy + 1, repaint);
+  BOOL result = fnMoveWindow(hWnd, x, y, cx, cy, repaint);
+  resizing = false;
+  return result;
 }
 
 static BOOL WINAPI DetourGetClientRect(HWND hWnd, LPRECT rect)
@@ -190,7 +203,7 @@ void ApplyBorderlessPatch()
 
     if (virtualWidth <= 0 || virtualHeight <= 0)
     {
-      // first time: the current render size is the selected resolution
+      // the real client size is the selected resolution
       RECT client;
       fnGetClientRect(GAME_WINDOW, &client);
       virtualWidth = client.right;

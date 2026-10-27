@@ -1,6 +1,8 @@
 # Sekiro FPS Unlock And More Native
 
-A mod for Sekiro: Shadows Die Twice (Steam, version 1.06). Its settings are rows in the game's own Settings menu, so there is no overlay and no separate program. Nexus page: https://www.nexusmods.com/sekiro/mods/2164
+Based on <https://github.com/rootBrz/SekiroImGui>
+
+A mod for Sekiro: Shadows Die Twice (Steam, version 1.06). Its settings are rows in the game's own Settings menu, so there is no overlay and no separate program.
 
 ## Install
 
@@ -10,13 +12,13 @@ On Linux/Proton nothing else is needed.
 
 ## Settings
 
-All settings are in the game's **Settings** menu (main menu and pause menu) and saved to `sekiroimgui.ini` next to the game. The log is `sekirofpsimgui.log`.
+All settings are in the game's **Settings** menu (main menu and pause menu) and saved to `SekiroFPSUnlockAndMoreNative.ini` next to the game. The log is `SekiroFPSUnlockAndMoreNative.log`.
 
-| Page | Options |
-|---|---|
-| Game Options | Autoloot, Skip Logos (restart), Disable Death Penalties, Disable Dragonrot |
-| Camera Options | Disable Camera Reset, Disable Camera Autorotate, Field of View |
-| Graphics Options | FPS Limit (unlock), VSync, Aspect Ratio, Stretch HUD |
+| Page             | Options                                                                    |
+| ---------------- | -------------------------------------------------------------------------- |
+| Game Options     | Autoloot, Skip Logos (restart), Disable Death Penalties, Disable Dragonrot |
+| Camera Options   | Disable Camera Reset, Disable Camera Autorotate, Field of View             |
+| Graphics Options | FPS Limit (unlock), VSync, Aspect Ratio, Stretch HUD                       |
 
 - **Screen Mode** also offers Borderless Windowed: the window always covers the screen while the game renders at the selected resolution.
 - **Screen Resolution** lists every resolution the display supports, also in windowed mode.
@@ -44,11 +46,11 @@ GPLv3, see `LICENSE`.
 
 ## Credits
 
-* Lyall - for SekiroFix (https://codeberg.org/Lyall/SekiroFix, MIT): animation culling fix for wider aspect ratios, sprint speed fix above 60 fps, fullscreen 60 hz startup patches, and the idea of an unrestricted resolution list.
-* Uberhalit - for SekiroFpsUnlockAndMore.
-* Katalash - for logos skip offset from Sekiro Mod Engine.
-* Thevayl - inspiration for FPS unlock during loading screens.
-* Cielos - for some camera adjustment offsets.
-* jackfuste - for FOV offset and basic running speed fix.
-* TsudaKageyu - for MinHook.
-* metayeti - for mINI.
+- Lyall - for SekiroFix (<https://codeberg.org/Lyall/SekiroFix>, MIT): animation culling fix for wider aspect ratios, sprint speed fix above 60 fps, fullscreen 60 hz startup patches, and the idea of an unrestricted resolution list.
+- Uberhalit - for SekiroFpsUnlockAndMore.
+- Katalash - for logos skip offset from Sekiro Mod Engine.
+- Thevayl - inspiration for FPS unlock during loading screens.
+- Cielos - for some camera adjustment offsets.
+- jackfuste - for FOV offset and basic running speed fix.
+- TsudaKageyu - for MinHook.
+- metayeti - for mINI.
