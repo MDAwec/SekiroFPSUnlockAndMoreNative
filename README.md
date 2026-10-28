@@ -39,6 +39,11 @@ make install SEKIRO_PATH=<game>   # also copies it into the game folder
 make dist                         # build/SekiroFPSUnlockAndMoreNative.7z
 ```
 
+## Research
+
+`research/` has notes on the game's Scaleform movies (which ones the HUD Layout handles and how to find the code
+behind one), the addresses the features use, and the scripts used to find them.
+
 ## Release
 
 Bump `VERSION` on `main` and add a `## <version>` section to `CHANGELOG.md`; the release workflow builds the archive and publishes it as a GitHub release with that section as notes. A manual run of the workflow only builds, and publishes nothing.
