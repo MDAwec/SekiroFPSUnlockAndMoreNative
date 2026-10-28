@@ -132,7 +132,8 @@ DWORD WINAPI InitThread(LPVOID lpParam)
   InstallMenuHooks();
 
   InitHooks();
-  ApplyAspectRatio(false);
+  // the render targets were built before the hook, so a chosen ratio needs them built again
+  ApplyAspectRatio(ASPECT_RATIO_MODE != 0);
   InstallFixes();
 
   // The game recreates its window when the resolution or screen mode changes, so follow it and
