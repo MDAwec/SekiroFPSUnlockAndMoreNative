@@ -42,7 +42,10 @@ constexpr Setting defaultSettings[] = {
     {"DisableCamReset", "0", &DISABLE_CAMRESET_ENABLED},
     {"DisableCamAutorotate", "0", &DISABLE_CAMERA_AUTOROTATE_ENABLED},
     {"DisableDeathPenalties", "0", &DISABLE_DEATH_PENALTIES_ENABLED},
-    {"DisableDragonrot", "0", &DISABLE_DRAGONROT_ENABLED}};
+    {"DisableDragonrot", "0", &DISABLE_DRAGONROT_ENABLED},
+    {"SoundVolumeMusic", "-1", &SOUND_VOLUME_MUSIC},
+    {"SoundVolumeEffects", "-1", &SOUND_VOLUME_EFFECTS},
+    {"SoundVolumeVoice", "-1", &SOUND_VOLUME_VOICE}};
 
 bool WriteProtectedMemory(uintptr_t address, const void *data, size_t size, const char *msg)
 {

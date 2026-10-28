@@ -3,6 +3,7 @@
 #include "menu.h"
 #include "offset.h"
 #include "patches.h"
+#include "sound.h"
 #include "utils.h"
 
 #include <cstring>
@@ -40,6 +41,7 @@ static uint64_t DetourPresentInterval(void *ctrl, unsigned type, void *a3, void 
 
   MenuFrame();
   UpdateFixes();
+  UpdateSoundVolumes();
   // The game restyles and resizes the window when screen mode or resolution changes; keep borderless.
   if (BORDERLESS_ENABLED && !FULLSCREEN_STATE)
     ApplyBorderlessPatch();
@@ -100,6 +102,8 @@ DWORD WINAPI InitThread(LPVOID lpParam)
   RefreshIniValues();
 
   InstallCrashLogger();
+  // The game applies its default sound volumes long before it has finished starting up
+  InstallSoundFix();
 
   // Nothing is hooked or patched before the game finished starting up
   while (!(GAME_WINDOW = GetGameWindow()))
