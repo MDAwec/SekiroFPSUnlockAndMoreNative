@@ -24,6 +24,7 @@ All settings are in the game's **Settings** menu (main menu and pause menu) and 
 - **Screen Resolution** lists every resolution the display supports, also in windowed mode.
 - **Aspect Ratio** letterboxes the picture to 4:3, 16:10, 16:9 or 21:9, or fills the screen.
 - **Stretch HUD** stretches the HUD over the whole screen. Off keeps it at 16:9, with the vignettes, fades and awareness markers fixed for wider and narrower pictures.
+- The game starts with your sound volumes instead of its defaults, which it would otherwise use until the save is loaded (the logos and the title played loud). The volumes are remembered in the INI (`SoundVolume*`) whenever they change; the first start after installing still plays at the defaults.
 - The frame rate is unlocked up to 300 fps, with the game's speed fixes (running speed, sprint speed) applied. The frame rate is also unlocked on loading screens.
 
 ## Build

@@ -40,6 +40,8 @@ constexpr uintptr_t render_resize_offset = 0x12EBB0;  // (sys, width, height): r
 constexpr uintptr_t present_interval_offset = 0x21E760; // GXSwapChainCtrl: returns the DXGI sync interval, once per frame
 constexpr uintptr_t window_singleton_offset = 0x3EA0BF8; // CSWindow pointer; dword +128 == 1 while fullscreen
 constexpr uintptr_t is_game_in_loading_offset = 0x3D7ACB3;
+constexpr uintptr_t game_data_man_offset = 0x3D5AAC0; // GameDataMan pointer; +0x50 option data, bytes +4..+6 music, sound effects, voice volume (0-10)
+constexpr uintptr_t sound_volume_update_offset = 0x92F330; // (dt): once per frame, applies the volumes of the option data to the sound categories
 constexpr uintptr_t fullscreen_refreshrate_num = 0x1B62D3F;
 
 inline uintptr_t is_game_in_loading_addr;
