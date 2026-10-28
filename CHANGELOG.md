@@ -2,7 +2,7 @@
 
 Each release needs a `## <version>` section here matching `VERSION`. The release workflow publishes that section as the GitHub release notes and fails if it is missing.
 
-## 1.1
+## 1.1.1
 
 - The game starts with your sound volumes instead of its defaults, so the logos and the title no longer play loud until the save is loaded. The music, sound effects and voice volumes are remembered in `SekiroFPSUnlockAndMoreNative.ini` whenever they change; the first start after updating still uses the defaults.
 
