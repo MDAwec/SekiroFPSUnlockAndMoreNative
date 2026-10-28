@@ -50,7 +50,7 @@ GPLv3, see `LICENSE`.
 ## Credits
 
 - Lyall - for SekiroFix (<https://codeberg.org/Lyall/SekiroFix>, MIT): animation culling fix for wider aspect ratios, sprint speed fix above 60 fps, fullscreen 60 hz startup patches, and the idea of an unrestricted resolution list.
-- MDAWec - for sound fix.
+- MDAWec - for sound fix, translations, refresh rate change and hud screen edges mod.
 - Uberhalit - for SekiroFpsUnlockAndMore.
 - Katalash - for logos skip offset from Sekiro Mod Engine.
 - Thevayl - inspiration for FPS unlock during loading screens.
