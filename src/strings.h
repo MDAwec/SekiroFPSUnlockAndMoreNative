@@ -179,21 +179,24 @@ inline const Text AspectRatioHelp = {L"Shape of the picture. Black bars are adde
 inline const Text FillScreen = {L"Fill Screen", L"Plein écran", L"Riempi schermo", L"Bildschirm füllen", L"Llenar pantalla", L"Preencher tela", L"Wypełnij ekran",
                                 L"Во весь экран", L"画面に合わせる", L"화면 채우기", L"填满屏幕", L"填滿螢幕", L"เต็มหน้าจอ"};
 
-inline const Text StretchHud = {L"Stretch HUD", L"Étirer l'interface", L"Estendi HUD", L"HUD strecken", L"Estirar HUD", L"Esticar HUD", L"Rozciągnij HUD",
-                                L"Растянуть интерфейс", L"HUDを引き伸ばす", L"HUD 늘리기", L"拉伸 HUD", L"拉伸 HUD", L"ยืด HUD"};
-inline const Text StretchHudHelp = {L"Stretches the HUD over the whole screen. Off keeps it at 16:9.",
-                                    L"Étire l'interface sur tout l'écran. Désactivé, elle reste en 16:9.",
-                                    L"Estende l'HUD su tutto lo schermo. Se disattivato, resta in 16:9.",
-                                    L"Streckt das HUD über den ganzen Bildschirm. Aus behält 16:9 bei.",
-                                    L"Estira el HUD por toda la pantalla. Desactivado, se mantiene en 16:9.",
-                                    L"Estica o HUD pela tela inteira. Desativado, mantém em 16:9.",
-                                    L"Rozciąga HUD na cały ekran. Wyłączone zachowuje proporcje 16:9.",
-                                    L"Растягивает интерфейс на весь экран. Если выключено, остаётся 16:9.",
-                                    L"HUDを画面全体に引き伸ばします。オフでは16:9のままです。",
-                                    L"HUD를 화면 전체로 늘립니다. 끄면 16:9로 유지됩니다.",
-                                    L"将 HUD 拉伸至整个屏幕。关闭时保持 16:9。",
-                                    L"將 HUD 拉伸至整個螢幕。關閉時維持 16:9。",
-                                    L"ยืด HUD ให้เต็มหน้าจอ ถ้าปิดจะคงไว้ที่ 16:9"};
+inline const Text HudLayout = {L"HUD Layout", L"Disposition de l'interface", L"Disposizione HUD", L"HUD-Anordnung", L"Disposición del HUD", L"Layout do HUD",
+                               L"Układ HUD", L"Расположение интерфейса", L"HUDレイアウト", L"HUD 배치", L"HUD 布局", L"HUD 配置", L"การจัดวาง HUD"};
+inline const Text HudLayoutHelp = {L"How the HUD fits a picture that is not 16:9: kept at 16:9, stretched over the whole screen, or with its elements moved to the screen edges.",
+                                   L"Adaptation de l'interface à une image qui n'est pas en 16:9 : conservée en 16:9, étirée sur tout l'écran ou avec ses éléments déplacés vers les bords.",
+                                   L"Come l'HUD si adatta a un'immagine non 16:9: mantenuto in 16:9, esteso su tutto lo schermo o con gli elementi spostati ai bordi.",
+                                   L"Wie das HUD in ein Bild passt, das nicht 16:9 ist: bei 16:9 belassen, über den ganzen Bildschirm gestreckt oder mit den Elementen an den Bildschirmrändern.",
+                                   L"Cómo se ajusta el HUD a una imagen que no es 16:9: se mantiene en 16:9, se estira por toda la pantalla o sus elementos se mueven a los bordes.",
+                                   L"Como o HUD se ajusta a uma imagem que não é 16:9: mantido em 16:9, esticado pela tela inteira ou com os elementos movidos para as bordas.",
+                                   L"Jak HUD dopasowuje się do obrazu innego niż 16:9: pozostaje w 16:9, jest rozciągnięty na cały ekran lub jego elementy trafiają do krawędzi ekranu.",
+                                   L"Как интерфейс подстраивается под картинку не 16:9: остаётся 16:9, растягивается на весь экран или его элементы прижимаются к краям.",
+                                   L"16:9以外の画面でのHUDの表示方法です。16:9のまま、画面全体に引き伸ばす、または要素を画面端に配置します。",
+                                   L"16:9가 아닌 화면에서 HUD를 맞추는 방식입니다. 16:9 유지, 화면 전체로 늘리기, 또는 요소를 화면 가장자리로 이동합니다.",
+                                   L"HUD 在非 16:9 画面中的显示方式：保持 16:9、拉伸至整个屏幕，或将元素移至屏幕边缘。",
+                                   L"HUD 在非 16:9 畫面中的顯示方式：維持 16:9、拉伸至整個螢幕，或將元素移至螢幕邊緣。",
+                                   L"วิธีจัด HUD เมื่อภาพไม่ใช่ 16:9: คงไว้ที่ 16:9 ยืดเต็มหน้าจอ หรือย้ายองค์ประกอบไปที่ขอบจอ"};
+inline const Text Stretch = {L"Stretch", L"Étirer", L"Estendi", L"Strecken", L"Estirar", L"Esticar", L"Rozciągnij", L"Растянуть", L"引き伸ばす", L"늘리기", L"拉伸", L"拉伸", L"ยืด"};
+inline const Text ScreenEdges = {L"Screen Edges", L"Bords de l'écran", L"Bordi dello schermo", L"Bildschirmränder", L"Bordes de la pantalla", L"Bordas da tela",
+                                 L"Krawędzie ekranu", L"По краям экрана", L"画面端", L"화면 가장자리", L"屏幕边缘", L"螢幕邊緣", L"ขอบจอ"};
 
 inline const Text Borderless = {L"Borderless Windowed", L"Fenêtré sans bordure", L"Finestra senza bordi", L"Randloses Fenster", L"Ventana sin bordes", L"Janela sem bordas",
                                 L"Okno bez ramki", L"Окно без рамки", L"ボーダーレスウィンドウ", L"테두리 없는 창 모드", L"无边框窗口", L"無邊框視窗", L"หน้าต่างไร้ขอบ"};

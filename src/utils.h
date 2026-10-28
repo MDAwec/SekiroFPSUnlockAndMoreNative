@@ -65,7 +65,14 @@ inline int AUTOLOOT_ENABLED;
 inline int INTROSKIP_ENABLED;
 inline int BORDERLESS_ENABLED;
 inline int ASPECT_RATIO_MODE;
-inline int STRETCH_HUD_ENABLED;
+// HUD Layout (ini StretchHud): kept at 16:9, stretched over the whole picture, or its elements at the picture edges
+enum HudLayout
+{
+  HUD_16_9 = 0,
+  HUD_STRETCH = 1,
+  HUD_EDGES = 2,
+};
+inline int HUD_LAYOUT;
 inline int FOV_ENABLED;
 inline int DISABLE_CAMRESET_ENABLED;
 inline int DISABLE_CAMERA_AUTOROTATE_ENABLED;

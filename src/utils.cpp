@@ -38,7 +38,7 @@ constexpr Setting defaultSettings[] = {
     {"EnableIntroSkip", "1", &INTROSKIP_ENABLED},
     {"EnableBorderlessFullscreen", "1", &BORDERLESS_ENABLED},
     {"AspectRatio", "0", &ASPECT_RATIO_MODE},
-    {"StretchHud", "1", &STRETCH_HUD_ENABLED},
+    {"StretchHud", "2", &HUD_LAYOUT},
     {"DisableCamReset", "0", &DISABLE_CAMRESET_ENABLED},
     {"DisableCamAutorotate", "0", &DISABLE_CAMERA_AUTOROTATE_ENABLED},
     {"DisableDeathPenalties", "0", &DISABLE_DEATH_PENALTIES_ENABLED},

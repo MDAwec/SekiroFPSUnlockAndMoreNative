@@ -320,6 +320,17 @@ void AddFov()
       });
 }
 
+// The movies are given their viewport again, which places the HUD for the new layout.
+void AddHudLayout()
+{
+  NewOption(
+      str::HudLayout, str::HudLayoutHelp, {Same(L"16:9"), str::Stretch, str::ScreenEdges}, {HUD_16_9, HUD_STRETCH, HUD_EDGES},
+      []
+      { return HUD_LAYOUT; },
+      [](int v)
+      { HUD_LAYOUT = v; Commit("StretchHud", v, RelayoutHud); });
+}
+
 // Page ids of the game's settings pages (CSCommonOptionUnit page factory).
 enum Page
 {
@@ -345,7 +356,7 @@ void BuildOptions()
   AddFpsLimit();
   AddToggle(str::VSync, str::VSyncHelp, VSYNC_ENABLED, "EnableVSync", nullptr, 1);
   AddAspectRatio();
-  AddToggle(str::StretchHud, str::StretchHudHelp, STRETCH_HUD_ENABLED, "StretchHud", RelayoutHud, 1);
+  AddHudLayout();
 }
 
 // Applies changes made through the arrow rows; called every frame.
