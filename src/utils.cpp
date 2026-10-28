@@ -31,6 +31,7 @@ typedef struct
 constexpr Setting defaultSettings[] = {
     {"EnableFpsUnlock", "1", &FPSUNLOCK_ENABLED},
     {"FpsLimit", "165", &FPS_LIMIT},
+    {"RefreshRate", "0", &REFRESH_RATE},
     {"EnableVSync", "1", &VSYNC_ENABLED},
     {"EnableFOV", "0", &FOV_ENABLED},
     {"ValueFOV", "0", &FOV_VALUE},
@@ -38,7 +39,7 @@ constexpr Setting defaultSettings[] = {
     {"EnableIntroSkip", "1", &INTROSKIP_ENABLED},
     {"EnableBorderlessFullscreen", "1", &BORDERLESS_ENABLED},
     {"AspectRatio", "0", &ASPECT_RATIO_MODE},
-    {"StretchHud", "1", &STRETCH_HUD_ENABLED},
+    {"StretchHud", "2", &HUD_LAYOUT},
     {"DisableCamReset", "0", &DISABLE_CAMRESET_ENABLED},
     {"DisableCamAutorotate", "0", &DISABLE_CAMERA_AUTOROTATE_ENABLED},
     {"DisableDeathPenalties", "0", &DISABLE_DEATH_PENALTIES_ENABLED},

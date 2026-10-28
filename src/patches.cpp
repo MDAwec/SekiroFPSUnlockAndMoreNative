@@ -4,6 +4,9 @@
 #include "utils.h"
 
 #include <cstring>
+#include <atomic>
+#include <d3d11.h>
+#include <dxgi.h>
 
 uintptr_t fovData;
 uintptr_t speedData;
@@ -312,16 +315,20 @@ void ApplyCamResetPatch()
   WriteProtectedMemory(camResetAddr, DISABLE_CAMRESET_ENABLED ? camResetDisable : camResetEnable, sizeof(uint8_t), "Patch cam reset");
 }
 
+// the refresh rate immediates: of the two `mov [..], 3Ch` and of the numerator and denominator before ResizeTarget
+static uintptr_t refreshImmediates[2], refreshDetour;
+
 // Removes hardvalue of 60 hz before call of ResizeTarget
 void ApplyFullscreenHZPatch()
 {
-  // Credit: Lyall's SekiroFix. Two more places hard code 60 hz: `mov [..], 3Ch`, the immediate is zeroed.
+  // Credit: Lyall's SekiroFix. Two more places hard code 60 hz: `mov [..], 3Ch`, the immediate gets the chosen rate.
+  int i = 0;
   for (uintptr_t offset : {fullscreen_refresh_rate_offset, fullscreen_refresh_rate_startup_offset})
   {
     uintptr_t addr = GetAbsoluteAddress(offset);
-    constexpr uint8_t zero = 0;
-    if (*(uint8_t *)addr == 0xC7 && *(uint8_t *)(addr + 3) == 0x3C)
-      WriteProtectedMemory(addr + 3, &zero, sizeof(zero), "Patch fullscreen refresh rate");
+    if (*(uint8_t *)addr == 0xC7 && *(uint32_t *)(addr + 3) == 0x3C)
+      refreshImmediates[i] = addr + 3;
+    i++;
   }
 
   uintptr_t numAddr = GetAbsoluteAddress(fullscreen_refreshrate_num);
@@ -336,6 +343,86 @@ void ApplyFullscreenHZPatch()
   uintptr_t detour = InjectShellcodeWithJumpBack(numAddr, patchEnable, sizeof(patchEnable), 14, "Write fullscreen hz fix");
 
   WriteProtectedMemory(numAddr, RelJmpBytes(14, (int32_t)(detour - (numAddr + 5))).data(), 14, "Patch fullscreen hz fix");
+  refreshDetour = detour;
+  ApplyRefreshRate();
+}
+
+// The refresh rate is switched in the game's own IDXGISwapChain::Present, on its render thread.
+using PresentFn = HRESULT(STDMETHODCALLTYPE *)(IDXGISwapChain *swapChain, UINT syncInterval, UINT flags);
+static PresentFn fnPresent;
+static std::atomic<bool> refreshSwitch;
+
+static void SwitchRefreshRate(IDXGISwapChain *swapChain)
+{
+  BOOL fullscreen = FALSE;
+  DXGI_SWAP_CHAIN_DESC desc;
+  if (FAILED(swapChain->GetFullscreenState(&fullscreen, nullptr)) || !fullscreen || FAILED(swapChain->GetDesc(&desc)))
+    return;
+  DXGI_MODE_DESC mode = desc.BufferDesc;
+  uint32_t rate = (uint32_t)std::max(REFRESH_RATE, 0);
+  mode.RefreshRate = {rate, rate ? 1u : 0u};
+  HRESULT hr = swapChain->ResizeTarget(&mode);
+  LogMessage(SUCCEEDED(hr) ? LogLevel::Success : LogLevel::Error, false, "Refresh rate %u hz for %ux%u (0x%08lX).", rate, mode.Width,
+             mode.Height, (unsigned long)hr);
+}
+
+static HRESULT STDMETHODCALLTYPE DetourPresent(IDXGISwapChain *swapChain, UINT syncInterval, UINT flags)
+{
+  if (refreshSwitch.exchange(false))
+    SwitchRefreshRate(swapChain);
+  return fnPresent(swapChain, syncInterval, flags);
+}
+
+// IDXGISwapChain::Present, taken from a swap chain made for that on a hidden window
+void InstallPresentHook()
+{
+  auto create = (PFN_D3D11_CREATE_DEVICE_AND_SWAP_CHAIN)(void *)GetProcAddress(GetModuleHandleA("d3d11.dll"), "D3D11CreateDeviceAndSwapChain");
+  HWND window = CreateWindowExA(0, "STATIC", "", WS_OVERLAPPED, 0, 0, 8, 8, nullptr, nullptr, nullptr, nullptr);
+  DXGI_SWAP_CHAIN_DESC desc = {};
+  desc.BufferCount = 1;
+  desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+  desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+  desc.OutputWindow = window;
+  desc.SampleDesc.Count = 1;
+  desc.Windowed = TRUE;
+  desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+  IDXGISwapChain *swapChain = nullptr;
+  ID3D11Device *device = nullptr;
+  ID3D11DeviceContext *context = nullptr;
+  if (create && window &&
+      SUCCEEDED(create(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &desc, &swapChain, &device, nullptr, &context)))
+  {
+    LPVOID present = (*(void ***)swapChain)[8];
+    if (MH_CreateHook(present, (LPVOID)&DetourPresent, (LPVOID *)&fnPresent) != MH_OK || MH_EnableHook(present) != MH_OK)
+      LogMessage(LogLevel::Error, false, "Present hook failed, a refresh rate applies on the next change of the screen mode");
+  }
+  else
+    LogMessage(LogLevel::Error, false, "No swap chain for the Present hook, a refresh rate applies on the next change of the screen mode");
+  if (context)
+    context->Release();
+  if (device)
+    device->Release();
+  if (swapChain)
+    swapChain->Release();
+  if (window)
+    DestroyWindow(window);
+}
+
+// 0 hz (numerator and denominator 0) leaves the refresh rate to the driver. With switchMode, a fullscreen display is
+// switched to it right away.
+void ApplyRefreshRate(bool switchMode)
+{
+  uint32_t rate = (uint32_t)std::max(REFRESH_RATE, 0), denominator = rate ? 1 : 0;
+  for (uintptr_t addr : refreshImmediates)
+    if (addr)
+      WriteProtectedMemory(addr, &rate, sizeof(rate), "Patch fullscreen refresh rate");
+  if (refreshDetour)
+  {
+    WriteProtectedMemory(refreshDetour + 1, &rate, sizeof(rate), "Write fullscreen refresh rate numerator");
+    WriteProtectedMemory(refreshDetour + 10, &denominator, sizeof(denominator), "Write fullscreen refresh rate denominator");
+  }
+  if (switchMode)
+    refreshSwitch = true;
 }
 
 // Dragonrot

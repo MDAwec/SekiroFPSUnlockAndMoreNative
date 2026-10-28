@@ -1,8 +1,10 @@
 #include "menu.h"
 #include "fixes.h"
+#include "lang.h"
 #include "MinHook.h"
 #include "offset.h"
 #include "patches.h"
+#include "strings.h"
 #include "utils.h"
 
 #include <algorithm>
@@ -56,9 +58,10 @@ uintptr_t gameHeapPtr;
 constexpr int TEXT_BASE = 900000000;
 constexpr size_t COMBO_MAX = 32; // DLFixedVector capacity of a ComboItemList
 
-std::vector<std::wstring> texts;
+// every text in each of the game's languages, shown in the language the game is set to
+std::vector<Text> texts;
 
-int AddText(const std::wstring &s)
+int AddText(const Text &s)
 {
   texts.push_back(s);
   return TEXT_BASE + (int)texts.size() - 1;
@@ -224,7 +227,7 @@ void Commit(const char *key, int value, void (*patch)())
     patch();
 }
 
-void NewOption(const wchar_t *title, const wchar_t *help, const std::vector<std::wstring> &labels, std::vector<int> values,
+void NewOption(const Text &title, const Text &help, const std::vector<Text> &labels, std::vector<int> values,
                std::function<int()> get, std::function<void(int)> set)
 {
   Option o;
@@ -232,7 +235,7 @@ void NewOption(const wchar_t *title, const wchar_t *help, const std::vector<std:
   o.titleId = AddText(title);
   o.helpId = AddText(help);
   o.choiceBase = TEXT_BASE + (int)texts.size();
-  for (const std::wstring &l : labels)
+  for (const Text &l : labels)
     AddText(l);
   o.values = std::move(values);
   o.get = std::move(get);
@@ -240,10 +243,10 @@ void NewOption(const wchar_t *title, const wchar_t *help, const std::vector<std:
   options.push_back(std::move(o));
 }
 
-void AddToggle(const wchar_t *title, const wchar_t *help, int &var, const char *key, void (*patch)() = nullptr, int def = 0)
+void AddToggle(const Text &title, const Text &help, int &var, const char *key, void (*patch)() = nullptr, int def = 0)
 {
   NewOption(
-      title, help, {L"Off", L"On"}, {0, 1}, [&var]
+      title, help, {str::Off, str::On}, {0, 1}, [&var]
       { return var ? 1 : 0; },
       [&var, key, patch](int v)
       { var = v; Commit(key, v, patch); });
@@ -263,11 +266,11 @@ int NearestIndex(const std::vector<int> &values, int v)
 void AddFpsLimit()
 {
   std::vector<int> values = {60, 90, 120, 144, 165, 180, 200, 240, 300, 0};
-  std::vector<std::wstring> labels;
+  std::vector<Text> labels;
   for (int v : values)
-    labels.push_back(v ? std::to_wstring(v) + L" FPS" : L"Unlimited");
+    labels.push_back(v ? Same(std::to_wstring(v) + L" FPS") : str::Unlimited);
   NewOption(
-      L"FPS Limit", L"Frame rate cap. 60 FPS is the game's default; higher values unlock the frame rate.", labels, values,
+      str::FpsLimit, str::FpsLimitHelp, labels, values,
       [values]
       {
         if (!FPSUNLOCK_ENABLED)
@@ -285,11 +288,33 @@ void AddFpsLimit()
       });
 }
 
+// The refresh rates the display offers; a change switches a fullscreen display right away.
+void AddRefreshRate()
+{
+  std::vector<int> values = {0};
+  DEVMODEW dm = {};
+  dm.dmSize = sizeof(dm);
+  for (DWORD i = 0; EnumDisplaySettingsW(nullptr, i, &dm); i++)
+    if (dm.dmDisplayFrequency >= 24 && std::find(values.begin(), values.end(), (int)dm.dmDisplayFrequency) == values.end())
+      values.push_back((int)dm.dmDisplayFrequency);
+  std::sort(values.begin() + 1, values.end());
+  if (values.size() > COMBO_MAX)
+    values.erase(values.begin() + 1, values.end() - (COMBO_MAX - 1));
+  std::vector<Text> labels = {str::Auto};
+  for (size_t i = 1; i < values.size(); i++)
+    labels.push_back(Same(std::to_wstring(values[i]) + L" Hz"));
+  NewOption(
+      str::RefreshRate, str::RefreshRateHelp, labels, values,
+      [values]
+      { return REFRESH_RATE > 0 ? NearestIndex(values, REFRESH_RATE) : 0; },
+      [values](int i)
+      { REFRESH_RATE = values[i]; Commit("RefreshRate", REFRESH_RATE, [] { ApplyRefreshRate(true); }); });
+}
+
 void AddAspectRatio()
 {
   NewOption(
-      L"Aspect Ratio", L"Shape of the picture. Black bars are added when it does not match the screen.",
-      {L"Fill Screen", L"4:3", L"16:10", L"16:9", L"21:9"}, {0, 1, 2, 3, 4},
+      str::AspectRatio, str::AspectRatioHelp, {str::FillScreen, Same(L"4:3"), Same(L"16:10"), Same(L"16:9"), Same(L"21:9")}, {0, 1, 2, 3, 4},
       []
       { return ASPECT_RATIO_MODE; },
       [](int v)
@@ -299,14 +324,14 @@ void AddAspectRatio()
 void AddFov()
 {
   std::vector<int> values;
-  std::vector<std::wstring> labels;
+  std::vector<Text> labels;
   for (int v = -90; v <= 90; v += 10)
   {
     values.push_back(v);
-    labels.push_back(v == 0 ? L"Default" : (v > 0 ? L"+" : L"") + std::to_wstring(v));
+    labels.push_back(v == 0 ? str::Default : Same((v > 0 ? L"+" : L"") + std::to_wstring(v)));
   }
   NewOption(
-      L"Field of View", L"Adjusts the camera field of view.", labels, values,
+      str::Fov, str::FovHelp, labels, values,
       [values]
       { return NearestIndex(values, FOV_ENABLED ? FOV_VALUE : 0); },
       [values](int i)
@@ -316,6 +341,17 @@ void AddFov()
         SetIniValue("ValueFOV", FOV_VALUE);
         Commit("EnableFOV", FOV_ENABLED, ApplyFovPatch);
       });
+}
+
+// The movies are given their viewport again, which places the HUD for the new layout.
+void AddHudLayout()
+{
+  NewOption(
+      str::HudLayout, str::HudLayoutHelp, {Same(L"16:9"), str::Stretch, str::ScreenEdges}, {HUD_16_9, HUD_STRETCH, HUD_EDGES},
+      []
+      { return HUD_LAYOUT; },
+      [](int v)
+      { HUD_LAYOUT = v; Commit("StretchHud", v, RelayoutHud); });
 }
 
 // Page ids of the game's settings pages (CSCommonOptionUnit page factory).
@@ -329,21 +365,22 @@ enum Page
 void BuildOptions()
 {
   buildPage = PAGE_GAME;
-  AddToggle(L"Autoloot", L"Picks up items automatically.", AUTOLOOT_ENABLED, "EnableAutoloot", ApplyAutolootPatch, 1);
-  AddToggle(L"Skip Logos (restart)", L"Skips the start-up logos. Takes effect after restarting the game.", INTROSKIP_ENABLED, "EnableIntroSkip", nullptr, 1);
-  AddToggle(L"Disable Death Penalties", L"No Sen or experience is lost on death. Dragonrot is not affected.", DISABLE_DEATH_PENALTIES_ENABLED, "DisableDeathPenalties", ApplyDeathPenaltiesPatch);
-  AddToggle(L"Disable Dragonrot", L"Dragonrot no longer spreads to NPCs.", DISABLE_DRAGONROT_ENABLED, "DisableDragonrot", ApplyDragonrotPatch);
+  AddToggle(str::Autoloot, str::AutolootHelp, AUTOLOOT_ENABLED, "EnableAutoloot", ApplyAutolootPatch, 1);
+  AddToggle(str::SkipLogos, str::SkipLogosHelp, INTROSKIP_ENABLED, "EnableIntroSkip", nullptr, 1);
+  AddToggle(str::DeathPenalties, str::DeathPenaltiesHelp, DISABLE_DEATH_PENALTIES_ENABLED, "DisableDeathPenalties", ApplyDeathPenaltiesPatch);
+  AddToggle(str::Dragonrot, str::DragonrotHelp, DISABLE_DRAGONROT_ENABLED, "DisableDragonrot", ApplyDragonrotPatch);
 
   buildPage = PAGE_CAMERA;
-  AddToggle(L"Disable Camera Reset", L"Locking on with no target in sight no longer re-centers the camera.", DISABLE_CAMRESET_ENABLED, "DisableCamReset", ApplyCamResetPatch);
-  AddToggle(L"Disable Camera Autorotate", L"Disables automatic camera rotation while moving. Meant for mouse users.", DISABLE_CAMERA_AUTOROTATE_ENABLED, "DisableCamAutorotate", ApplyCamAutorotatePatch);
+  AddToggle(str::CamReset, str::CamResetHelp, DISABLE_CAMRESET_ENABLED, "DisableCamReset", ApplyCamResetPatch);
+  AddToggle(str::CamAutorotate, str::CamAutorotateHelp, DISABLE_CAMERA_AUTOROTATE_ENABLED, "DisableCamAutorotate", ApplyCamAutorotatePatch);
   AddFov();
 
   buildPage = PAGE_GRAPHICS;
   AddFpsLimit();
-  AddToggle(L"VSync", L"Synchronizes presentation with the display.", VSYNC_ENABLED, "EnableVSync", nullptr, 1);
+  AddRefreshRate();
+  AddToggle(str::VSync, str::VSyncHelp, VSYNC_ENABLED, "EnableVSync", nullptr, 1);
   AddAspectRatio();
-  AddToggle(L"Stretch HUD", L"Stretches the HUD over the whole screen. Off keeps it at 16:9.", STRETCH_HUD_ENABLED, "StretchHud", RelayoutHud, 1);
+  AddHudLayout();
 }
 
 // Applies changes made through the arrow rows; called every frame.
@@ -394,7 +431,11 @@ void *DetourButton(void *page, void *textDef, void *a3, void *a4, void *a5)
 void *DetourText(void *holder, void *msg, unsigned id, const wchar_t *name)
 {
   if (!msg && id >= (unsigned)TEXT_BASE && id < (unsigned)TEXT_BASE + texts.size())
-    return fnFormat(holder, L"%s", texts[id - TEXT_BASE].c_str());
+  {
+    const Text &text = texts[id - TEXT_BASE];
+    const std::wstring &s = text[GameLanguage()];
+    return fnFormat(holder, L"%s", (s.empty() ? text[EN] : s).c_str());
+  }
   return fnText(holder, msg, id, name);
 }
 
@@ -507,7 +548,7 @@ void InstallMenuHooks()
   gameHeapPtr = GetAbsoluteAddress(0x3D9CE28);
 
   BuildOptions();
-  borderlessTextId = AddText(L"Borderless Windowed");
+  borderlessTextId = AddText(str::Borderless);
 
   bool ok = Hook(0xC7DAA0, textBytes, sizeof(textBytes), (void *)DetourText, (void **)&fnText, "menu text") &&
             Hook(0xCC4FE0, factoryBytes, sizeof(factoryBytes), (void *)DetourFactory, (void **)&fnFactory, "settings page factory") &&

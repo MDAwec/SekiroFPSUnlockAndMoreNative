@@ -14,10 +14,27 @@ typedef uint64_t (*presentInterval)(void *ctrl, unsigned type, void *a3, void *a
 static changeDisplaySettingsExW fnChangeDisplaySettingsExW;
 static presentInterval fnPresentInterval;
 
-// Removes the 60hz refresh rate lock
+// whether the display has a mode of this size at this refresh rate
+static bool HasMode(LPCWSTR device, DWORD width, DWORD height, DWORD rate)
+{
+  DEVMODEW dm = {};
+  dm.dmSize = sizeof(dm);
+  for (DWORD i = 0; EnumDisplaySettingsW(device, i, &dm); i++)
+    if (dm.dmPelsWidth == width && dm.dmPelsHeight == height && dm.dmDisplayFrequency == rate)
+      return true;
+  return false;
+}
+
+// Removes the 60hz refresh rate lock: the chosen refresh rate when the display has it for the size, otherwise none to
+// leave it to the driver
 static long WINAPI DetourChangeDisplaySettingsExW(LPCWSTR lpszDeviceName, DEVMODEW *lpDevMode, HWND hwnd, DWORD dwflags, LPVOID lParam)
 {
-  if (lpDevMode != nullptr)
+  if (lpDevMode != nullptr && REFRESH_RATE > 0 && HasMode(lpszDeviceName, lpDevMode->dmPelsWidth, lpDevMode->dmPelsHeight, REFRESH_RATE))
+  {
+    lpDevMode->dmDisplayFrequency = REFRESH_RATE;
+    lpDevMode->dmFields |= DM_DISPLAYFREQUENCY;
+  }
+  else if (lpDevMode != nullptr)
     lpDevMode->dmFields &= ~DM_DISPLAYFREQUENCY;
 
   return fnChangeDisplaySettingsExW(lpszDeviceName, lpDevMode, hwnd, dwflags, lParam);
@@ -51,6 +68,7 @@ static uint64_t DetourPresentInterval(void *ctrl, unsigned type, void *a3, void 
 
 static void InitHooks()
 {
+  InstallPresentHook();
   HMODULE hUser32 = GetModuleHandleA("user32.dll");
   LPVOID pChangeDisplaySettingsExW = (LPVOID)GetProcAddress(hUser32, "ChangeDisplaySettingsExW");
 
@@ -132,7 +150,8 @@ DWORD WINAPI InitThread(LPVOID lpParam)
   InstallMenuHooks();
 
   InitHooks();
-  ApplyAspectRatio(false);
+  // the render targets were built before the hook, so a chosen ratio needs them built again
+  ApplyAspectRatio(ASPECT_RATIO_MODE != 0);
   InstallFixes();
 
   // The game recreates its window when the resolution or screen mode changes, so follow it and
