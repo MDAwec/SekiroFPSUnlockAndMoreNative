@@ -1,0 +1,200 @@
+#pragma once
+#include "lang.h"
+
+// Texts of the mod's settings rows, one per language in the order of Lang:
+// EN, FR, IT, DE, ES, PT_BR, PL, RU, JA, KO, ZH_CN, ZH_TW, TH.
+namespace str
+{
+inline const Text Off = {L"Off", L"Désactivé", L"Disattivato", L"Aus", L"Desactivado", L"Desativado", L"Wył.", L"Выкл.", L"オフ", L"끄기", L"关", L"關", L"ปิด"};
+inline const Text On = {L"On", L"Activé", L"Attivato", L"An", L"Activado", L"Ativado", L"Wł.", L"Вкл.", L"オン", L"켜기", L"开", L"開", L"เปิด"};
+inline const Text Default = {L"Default", L"Par défaut", L"Predefinito", L"Standard", L"Predeterminado", L"Padrão", L"Domyślne", L"По умолчанию", L"デフォルト", L"기본값", L"默认", L"預設", L"ค่าเริ่มต้น"};
+
+inline const Text Autoloot = {L"Autoloot", L"Ramassage automatique", L"Raccolta automatica", L"Automatisches Aufsammeln", L"Recogida automática", L"Coleta automática",
+                              L"Automatyczne podnoszenie", L"Автоподбор", L"自動拾得", L"자동 줍기", L"自动拾取", L"自動拾取", L"เก็บของอัตโนมัติ"};
+inline const Text AutolootHelp = {L"Picks up items automatically.",
+                                  L"Ramasse les objets automatiquement.",
+                                  L"Raccoglie automaticamente gli oggetti.",
+                                  L"Hebt Gegenstände automatisch auf.",
+                                  L"Recoge los objetos automáticamente.",
+                                  L"Coleta itens automaticamente.",
+                                  L"Automatycznie podnosi przedmioty.",
+                                  L"Автоматически подбирает предметы.",
+                                  L"アイテムを自動で拾います。",
+                                  L"아이템을 자동으로 줍습니다.",
+                                  L"自动拾取物品。",
+                                  L"自動拾取物品。",
+                                  L"เก็บไอเทมโดยอัตโนมัติ"};
+
+inline const Text SkipLogos = {L"Skip Logos (restart)", L"Passer les logos (redémarrage)", L"Salta i loghi (riavvio)", L"Logos überspringen (Neustart)",
+                               L"Omitir logotipos (reinicio)", L"Pular logotipos (reiniciar)", L"Pomiń logo (restart)", L"Пропуск логотипов (перезапуск)",
+                               L"ロゴをスキップ（再起動）", L"로고 건너뛰기 (재시작)", L"跳过开场标志（需重启）", L"跳過開場標誌（需重新啟動）", L"ข้ามโลโก้ (รีสตาร์ท)"};
+inline const Text SkipLogosHelp = {L"Skips the start-up logos. Takes effect after restarting the game.",
+                                   L"Passe les logos au démarrage. Prend effet après le redémarrage du jeu.",
+                                   L"Salta i loghi all'avvio. Ha effetto dopo il riavvio del gioco.",
+                                   L"Überspringt die Logos beim Start. Wirkt nach einem Neustart des Spiels.",
+                                   L"Omite los logotipos del inicio. Se aplica tras reiniciar el juego.",
+                                   L"Pula os logotipos de inicialização. Entra em vigor após reiniciar o jogo.",
+                                   L"Pomija logo przy uruchamianiu. Działa po ponownym uruchomieniu gry.",
+                                   L"Пропускает логотипы при запуске. Вступает в силу после перезапуска игры.",
+                                   L"起動時のロゴをスキップします。ゲームの再起動後に反映されます。",
+                                   L"시작 로고를 건너뜁니다. 게임을 다시 시작하면 적용됩니다.",
+                                   L"跳过启动时的标志画面。重启游戏后生效。",
+                                   L"跳過啟動時的標誌畫面。重新啟動遊戲後生效。",
+                                   L"ข้ามโลโก้ตอนเริ่มเกม มีผลหลังจากรีสตาร์ทเกม"};
+
+inline const Text DeathPenalties = {L"Disable Death Penalties", L"Désactiver les pénalités de mort", L"Disattiva penalità di morte", L"Todesstrafen deaktivieren",
+                                    L"Desactivar penalizaciones por muerte", L"Desativar penalidades de morte", L"Wyłącz kary za śmierć", L"Отключить штрафы за смерть",
+                                    L"死亡ペナルティを無効化", L"사망 페널티 끄기", L"禁用死亡惩罚", L"停用死亡懲罰", L"ปิดบทลงโทษเมื่อตาย"};
+inline const Text DeathPenaltiesHelp = {L"No Sen or experience is lost on death. Dragonrot is not affected.",
+                                        L"Aucun sen ni point d'expérience n'est perdu à la mort. La peste du dragon n'est pas affectée.",
+                                        L"Alla morte non si perdono sen né esperienza. Il morbo del drago non è influenzato.",
+                                        L"Beim Tod gehen weder Sen noch Erfahrung verloren. Die Drachenfäule ist nicht betroffen.",
+                                        L"No se pierden sen ni experiencia al morir. La podredumbre de dragón no se ve afectada.",
+                                        L"Nenhum sen ou experiência é perdido ao morrer. A podridão do dragão não é afetada.",
+                                        L"Po śmierci nie traci się senów ani doświadczenia. Nie wpływa na smoczą zgniliznę.",
+                                        L"При смерти не теряются сэны и опыт. На драконью гниль не влияет.",
+                                        L"死亡時に銭と経験を失いません。竜咳には影響しません。",
+                                        L"사망 시 센과 경험치를 잃지 않습니다. 용해에는 영향을 주지 않습니다.",
+                                        L"死亡时不会损失钱和经验。不影响龙咳。",
+                                        L"死亡時不會損失錢與經驗。不影響龍咳。",
+                                        L"ไม่เสียเงินเซนหรือค่าประสบการณ์เมื่อตาย ไม่มีผลต่อโรคมังกร"};
+
+inline const Text Dragonrot = {L"Disable Dragonrot", L"Désactiver la peste du dragon", L"Disattiva morbo del drago", L"Drachenfäule deaktivieren",
+                               L"Desactivar podredumbre de dragón", L"Desativar podridão do dragão", L"Wyłącz smoczą zgniliznę", L"Отключить драконью гниль",
+                               L"竜咳を無効化", L"용해 끄기", L"禁用龙咳", L"停用龍咳", L"ปิดโรคมังกร"};
+inline const Text DragonrotHelp = {L"Dragonrot no longer spreads to NPCs.",
+                                   L"La peste du dragon ne se propage plus aux PNJ.",
+                                   L"Il morbo del drago non si diffonde più ai PNG.",
+                                   L"Die Drachenfäule breitet sich nicht mehr auf NPCs aus.",
+                                   L"La podredumbre de dragón ya no se propaga a los PNJ.",
+                                   L"A podridão do dragão não se espalha mais para os NPCs.",
+                                   L"Smocza zgnilizna nie rozprzestrzenia się już na NPC.",
+                                   L"Драконья гниль больше не распространяется на NPC.",
+                                   L"竜咳がNPCに広がらなくなります。",
+                                   L"용해가 더 이상 NPC에게 퍼지지 않습니다.",
+                                   L"龙咳不再传染给NPC。",
+                                   L"龍咳不再傳染給NPC。",
+                                   L"โรคมังกรจะไม่แพร่ไปยัง NPC อีก"};
+
+inline const Text CamReset = {L"Disable Camera Reset", L"Désactiver la réinitialisation de la caméra", L"Disattiva reimpostazione telecamera",
+                              L"Kamera-Zurücksetzen deaktivieren", L"Desactivar reinicio de cámara", L"Desativar redefinição da câmera", L"Wyłącz resetowanie kamery",
+                              L"Отключить сброс камеры", L"カメラリセットを無効化", L"카메라 초기화 끄기", L"禁用镜头重置", L"停用鏡頭重置", L"ปิดการรีเซ็ตกล้อง"};
+inline const Text CamResetHelp = {L"Locking on with no target in sight no longer re-centers the camera.",
+                                  L"Verrouiller sans cible en vue ne recentre plus la caméra.",
+                                  L"Agganciare senza bersagli in vista non ricentra più la telecamera.",
+                                  L"Anvisieren ohne Ziel in Sicht zentriert die Kamera nicht mehr.",
+                                  L"Fijar sin ningún objetivo a la vista ya no recentra la cámara.",
+                                  L"Travar a mira sem alvo à vista não recentraliza mais a câmera.",
+                                  L"Namierzanie bez celu w zasięgu wzroku nie centruje już kamery.",
+                                  L"Захват цели, когда врагов не видно, больше не выравнивает камеру.",
+                                  L"視界に敵がいない状態でロックオンしても、カメラが正面に戻らなくなります。",
+                                  L"시야에 대상이 없을 때 록온해도 카메라가 다시 정렬되지 않습니다.",
+                                  L"视野中没有目标时锁定不再重置镜头。",
+                                  L"視野中沒有目標時鎖定不再重置鏡頭。",
+                                  L"การล็อกเป้าเมื่อไม่มีเป้าหมายในสายตาจะไม่จัดกล้องกลับกลางอีก"};
+
+inline const Text CamAutorotate = {L"Disable Camera Autorotate", L"Désactiver la rotation auto de la caméra", L"Disattiva rotazione automatica telecamera",
+                                   L"Automatische Kameradrehung deaktivieren", L"Desactivar giro automático de cámara", L"Desativar rotação automática da câmera",
+                                   L"Wyłącz automatyczny obrót kamery", L"Отключить автоповорот камеры", L"カメラ自動回転を無効化", L"카메라 자동 회전 끄기",
+                                   L"禁用镜头自动旋转", L"停用鏡頭自動旋轉", L"ปิดการหมุนกล้องอัตโนมัติ"};
+inline const Text CamAutorotateHelp = {L"Disables automatic camera rotation while moving. Meant for mouse users.",
+                                       L"Désactive la rotation automatique de la caméra en mouvement. Destiné aux joueurs à la souris.",
+                                       L"Disattiva la rotazione automatica della telecamera durante il movimento. Pensato per chi usa il mouse.",
+                                       L"Deaktiviert die automatische Kameradrehung beim Laufen. Für Mausspieler gedacht.",
+                                       L"Desactiva el giro automático de la cámara al moverse. Pensado para jugar con ratón.",
+                                       L"Desativa a rotação automática da câmera ao se mover. Pensado para quem usa mouse.",
+                                       L"Wyłącza automatyczny obrót kamery podczas ruchu. Przeznaczone dla graczy używających myszy.",
+                                       L"Отключает автоматический поворот камеры при движении. Для игры на мыши.",
+                                       L"移動中のカメラの自動回転を無効にします。マウス操作向けです。",
+                                       L"이동 중 카메라 자동 회전을 끕니다. 마우스 사용자용입니다.",
+                                       L"禁用移动时的镜头自动旋转。适合使用鼠标的玩家。",
+                                       L"停用移動時的鏡頭自動旋轉。適合使用滑鼠的玩家。",
+                                       L"ปิดการหมุนกล้องอัตโนมัติขณะเคลื่อนที่ เหมาะสำหรับผู้เล่นที่ใช้เมาส์"};
+
+inline const Text Fov = {L"Field of View", L"Champ de vision", L"Campo visivo", L"Sichtfeld", L"Campo de visión", L"Campo de visão", L"Pole widzenia",
+                         L"Поле зрения", L"視野角", L"시야각", L"视野", L"視野", L"มุมมองภาพ"};
+inline const Text FovHelp = {L"Adjusts the camera field of view.",
+                             L"Règle le champ de vision de la caméra.",
+                             L"Regola il campo visivo della telecamera.",
+                             L"Passt das Sichtfeld der Kamera an.",
+                             L"Ajusta el campo de visión de la cámara.",
+                             L"Ajusta o campo de visão da câmera.",
+                             L"Dostosowuje pole widzenia kamery.",
+                             L"Настраивает поле зрения камеры.",
+                             L"カメラの視野角を調整します。",
+                             L"카메라 시야각을 조절합니다.",
+                             L"调整镜头视野。",
+                             L"調整鏡頭視野。",
+                             L"ปรับมุมมองภาพของกล้อง"};
+
+inline const Text FpsLimit = {L"FPS Limit", L"Limite de FPS", L"Limite FPS", L"FPS-Begrenzung", L"Límite de FPS", L"Limite de FPS", L"Limit FPS",
+                              L"Ограничение FPS", L"FPS上限", L"FPS 제한", L"帧率上限", L"影格率上限", L"จำกัด FPS"};
+inline const Text FpsLimitHelp = {L"Frame rate cap. 60 FPS is the game's default; higher values unlock the frame rate.",
+                                  L"Limite d'images par seconde. 60 FPS est la valeur par défaut du jeu ; les valeurs supérieures débloquent la fréquence d'images.",
+                                  L"Limite di fotogrammi. 60 FPS è il valore predefinito del gioco; valori più alti sbloccano il frame rate.",
+                                  L"Bildratenbegrenzung. 60 FPS ist der Standard des Spiels; höhere Werte heben die Bildratensperre auf.",
+                                  L"Límite de fotogramas. 60 FPS es el valor predeterminado del juego; los valores más altos desbloquean la tasa de fotogramas.",
+                                  L"Limite de quadros. 60 FPS é o padrão do jogo; valores maiores desbloqueiam a taxa de quadros.",
+                                  L"Limit klatek na sekundę. 60 FPS to domyślna wartość gry; wyższe wartości odblokowują liczbę klatek.",
+                                  L"Ограничение частоты кадров. 60 FPS — значение игры по умолчанию; большие значения снимают ограничение.",
+                                  L"フレームレートの上限です。60 FPSがゲームの既定値で、それより高い値でフレームレートの制限を解除します。",
+                                  L"프레임 속도 제한입니다. 60 FPS가 게임 기본값이며, 더 높은 값은 프레임 속도 제한을 해제합니다.",
+                                  L"帧率上限。60 FPS 为游戏默认值；更高的数值会解锁帧率。",
+                                  L"影格率上限。60 FPS 為遊戲預設值；更高的數值會解除影格率限制。",
+                                  L"จำกัดอัตราเฟรม 60 FPS คือค่าเริ่มต้นของเกม ค่าที่สูงกว่าจะปลดล็อกอัตราเฟรม"};
+inline const Text Unlimited = {L"Unlimited", L"Illimité", L"Illimitato", L"Unbegrenzt", L"Ilimitado", L"Ilimitado", L"Bez limitu",
+                               L"Без ограничения", L"無制限", L"무제한", L"无限制", L"無限制", L"ไม่จำกัด"};
+
+inline const Text VSync = {L"VSync", L"Synchronisation verticale", L"Sincronizzazione verticale", L"VSync", L"Sincronización vertical", L"Sincronização vertical",
+                           L"Synchronizacja pionowa", L"Вертикальная синхронизация", L"垂直同期", L"수직 동기화", L"垂直同步", L"垂直同步", L"VSync"};
+inline const Text VSyncHelp = {L"Synchronizes presentation with the display.",
+                               L"Synchronise l'affichage des images avec l'écran.",
+                               L"Sincronizza la visualizzazione delle immagini con lo schermo.",
+                               L"Synchronisiert die Bildausgabe mit dem Bildschirm.",
+                               L"Sincroniza la presentación de imágenes con la pantalla.",
+                               L"Sincroniza a exibição das imagens com a tela.",
+                               L"Synchronizuje wyświetlanie klatek z ekranem.",
+                               L"Синхронизирует вывод кадров с дисплеем.",
+                               L"画面の表示をディスプレイと同期します。",
+                               L"화면 출력을 디스플레이와 동기화합니다.",
+                               L"使画面输出与显示器同步。",
+                               L"使畫面輸出與顯示器同步。",
+                               L"ซิงค์การแสดงภาพกับจอแสดงผล"};
+
+inline const Text AspectRatio = {L"Aspect Ratio", L"Format d'image", L"Proporzioni", L"Seitenverhältnis", L"Relación de aspecto", L"Proporção de tela",
+                                 L"Proporcje obrazu", L"Соотношение сторон", L"アスペクト比", L"화면비", L"宽高比", L"長寬比", L"อัตราส่วนภาพ"};
+inline const Text AspectRatioHelp = {L"Shape of the picture. Black bars are added when it does not match the screen.",
+                                     L"Forme de l'image. Des bandes noires sont ajoutées si elle ne correspond pas à l'écran.",
+                                     L"Forma dell'immagine. Vengono aggiunte bande nere se non corrisponde allo schermo.",
+                                     L"Form des Bildes. Passt sie nicht zum Bildschirm, werden schwarze Balken ergänzt.",
+                                     L"Forma de la imagen. Se añaden bandas negras si no coincide con la pantalla.",
+                                     L"Formato da imagem. Barras pretas são adicionadas quando não corresponde à tela.",
+                                     L"Kształt obrazu. Jeśli nie pasuje do ekranu, dodawane są czarne pasy.",
+                                     L"Форма изображения. Если она не совпадает с экраном, добавляются чёрные полосы.",
+                                     L"映像の縦横比です。画面と合わない場合は黒帯が追加されます。",
+                                     L"화면 비율입니다. 화면과 맞지 않으면 검은 띠가 추가됩니다.",
+                                     L"画面比例。与屏幕不匹配时会添加黑边。",
+                                     L"畫面比例。與螢幕不符時會加上黑邊。",
+                                     L"รูปทรงของภาพ จะมีแถบสีดำเพิ่มเข้ามาเมื่อไม่ตรงกับหน้าจอ"};
+inline const Text FillScreen = {L"Fill Screen", L"Plein écran", L"Riempi schermo", L"Bildschirm füllen", L"Llenar pantalla", L"Preencher tela", L"Wypełnij ekran",
+                                L"Во весь экран", L"画面に合わせる", L"화면 채우기", L"填满屏幕", L"填滿螢幕", L"เต็มหน้าจอ"};
+
+inline const Text StretchHud = {L"Stretch HUD", L"Étirer l'interface", L"Estendi HUD", L"HUD strecken", L"Estirar HUD", L"Esticar HUD", L"Rozciągnij HUD",
+                                L"Растянуть интерфейс", L"HUDを引き伸ばす", L"HUD 늘리기", L"拉伸 HUD", L"拉伸 HUD", L"ยืด HUD"};
+inline const Text StretchHudHelp = {L"Stretches the HUD over the whole screen. Off keeps it at 16:9.",
+                                    L"Étire l'interface sur tout l'écran. Désactivé, elle reste en 16:9.",
+                                    L"Estende l'HUD su tutto lo schermo. Se disattivato, resta in 16:9.",
+                                    L"Streckt das HUD über den ganzen Bildschirm. Aus behält 16:9 bei.",
+                                    L"Estira el HUD por toda la pantalla. Desactivado, se mantiene en 16:9.",
+                                    L"Estica o HUD pela tela inteira. Desativado, mantém em 16:9.",
+                                    L"Rozciąga HUD na cały ekran. Wyłączone zachowuje proporcje 16:9.",
+                                    L"Растягивает интерфейс на весь экран. Если выключено, остаётся 16:9.",
+                                    L"HUDを画面全体に引き伸ばします。オフでは16:9のままです。",
+                                    L"HUD를 화면 전체로 늘립니다. 끄면 16:9로 유지됩니다.",
+                                    L"将 HUD 拉伸至整个屏幕。关闭时保持 16:9。",
+                                    L"將 HUD 拉伸至整個螢幕。關閉時維持 16:9。",
+                                    L"ยืด HUD ให้เต็มหน้าจอ ถ้าปิดจะคงไว้ที่ 16:9"};
+
+inline const Text Borderless = {L"Borderless Windowed", L"Fenêtré sans bordure", L"Finestra senza bordi", L"Randloses Fenster", L"Ventana sin bordes", L"Janela sem bordas",
+                                L"Okno bez ramki", L"Окно без рамки", L"ボーダーレスウィンドウ", L"테두리 없는 창 모드", L"无边框窗口", L"無邊框視窗", L"หน้าต่างไร้ขอบ"};
+} // namespace str

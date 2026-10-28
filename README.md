@@ -12,6 +12,8 @@ On Linux/Proton nothing else is needed.
 
 ## Settings
 
+The mod's rows are shown in the game's language: English, French, Italian, German, Spanish, Portuguese (Brazil), Polish, Russian, Japanese, Korean, Simplified Chinese, Traditional Chinese or Thai.
+
 All settings are in the game's **Settings** menu (main menu and pause menu) and saved to `SekiroFPSUnlockAndMoreNative.ini` next to the game. The log is `SekiroFPSUnlockAndMoreNative.log`.
 
 | Page             | Options                                                                    |
