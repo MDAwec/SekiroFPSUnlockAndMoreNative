@@ -2,6 +2,14 @@
 
 Each release needs a `## <version>` section here matching `VERSION`. The release workflow publishes that section as the GitHub release notes and fails if it is missing.
 
+## 1.2.0
+
+- The mod's settings rows are shown in the game's language: English, French, Italian, German, Spanish, Portuguese (Brazil), Polish, Russian, Japanese, Korean, Simplified Chinese, Traditional Chinese or Thai.
+- HUD Layout replaces Stretch HUD, with a new choice, Screen Edges (the default): on a picture that is not 16:9 the HUD elements move to its edges, the health, boss bars and counters to the sides on wider pictures and to the top and bottom on narrower ones, while the posture bars stay in the centre. Stretch and 16:9 work as Stretch HUD on and off did. The setting stays under the INI key `StretchHud` (0 = 16:9, 1 = Stretch, 2 = Screen Edges).
+- The black screen, the fades and the black background of the loading screens always cover the whole picture.
+- A chosen Aspect Ratio applies from the start; it applied only after a setting was changed.
+- The HUD follows the render resolution also when the game creates it with another size, e.g. in fullscreen 2560 x 1080.
+
 ## 1.1.1
 
 - The game starts with your sound volumes instead of its defaults, so the logos and the title no longer play loud until the save is loaded. The music, sound effects and voice volumes are remembered in `SekiroFPSUnlockAndMoreNative.ini` whenever they change; the first start after updating still uses the defaults.
