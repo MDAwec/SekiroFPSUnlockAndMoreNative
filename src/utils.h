@@ -59,6 +59,7 @@ inline HWND GAME_WINDOW = nullptr;
 // INI SETTINGS
 inline bool FULLSCREEN_STATE;
 inline int FPS_LIMIT;
+inline int REFRESH_RATE; // fullscreen refresh rate in hz, 0 = left to the driver
 inline int FOV_VALUE;
 inline int FPSUNLOCK_ENABLED;
 inline int AUTOLOOT_ENABLED;

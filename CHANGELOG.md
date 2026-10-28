@@ -6,7 +6,8 @@ Each release needs a `## <version>` section here matching `VERSION`. The release
 
 - The mod's settings rows are shown in the game's language: English, French, Italian, German, Spanish, Portuguese (Brazil), Polish, Russian, Japanese, Korean, Simplified Chinese, Traditional Chinese or Thai.
 - HUD Layout replaces Stretch HUD, with a new choice, Screen Edges (the default): on a picture that is not 16:9 the HUD elements move to its edges, the health, boss bars and counters to the sides on wider pictures and to the top and bottom on narrower ones, while the posture bars stay in the centre. Stretch and 16:9 work as Stretch HUD on and off did. The setting stays under the INI key `StretchHud` (0 = 16:9, 1 = Stretch, 2 = Screen Edges).
-- The black screen, the fades and the black background of the loading screens always cover the whole picture.
+- The black screen, the fades and the vignettes always cover the whole picture, and the black backgrounds of the loading screens, the death screen, the idol menu and the notifications (items, skills, events, messages, tutorials) cover it too. The save icon moves to its corner with Screen Edges.
+- Refresh Rate in the graphics settings: Auto (left to the driver) or a rate of the display, applied right away in fullscreen.
 - A chosen Aspect Ratio applies from the start; it applied only after a setting was changed.
 - The HUD follows the render resolution also when the game creates it with another size, e.g. in fullscreen 2560 x 1080.
 

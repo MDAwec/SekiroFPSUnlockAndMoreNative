@@ -31,6 +31,7 @@ typedef struct
 constexpr Setting defaultSettings[] = {
     {"EnableFpsUnlock", "1", &FPSUNLOCK_ENABLED},
     {"FpsLimit", "165", &FPS_LIMIT},
+    {"RefreshRate", "0", &REFRESH_RATE},
     {"EnableVSync", "1", &VSYNC_ENABLED},
     {"EnableFOV", "0", &FOV_ENABLED},
     {"ValueFOV", "0", &FOV_VALUE},

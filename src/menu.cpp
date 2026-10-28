@@ -288,6 +288,29 @@ void AddFpsLimit()
       });
 }
 
+// The refresh rates the display offers; a change switches a fullscreen display right away.
+void AddRefreshRate()
+{
+  std::vector<int> values = {0};
+  DEVMODEW dm = {};
+  dm.dmSize = sizeof(dm);
+  for (DWORD i = 0; EnumDisplaySettingsW(nullptr, i, &dm); i++)
+    if (dm.dmDisplayFrequency >= 24 && std::find(values.begin(), values.end(), (int)dm.dmDisplayFrequency) == values.end())
+      values.push_back((int)dm.dmDisplayFrequency);
+  std::sort(values.begin() + 1, values.end());
+  if (values.size() > COMBO_MAX)
+    values.erase(values.begin() + 1, values.end() - (COMBO_MAX - 1));
+  std::vector<Text> labels = {str::Auto};
+  for (size_t i = 1; i < values.size(); i++)
+    labels.push_back(Same(std::to_wstring(values[i]) + L" Hz"));
+  NewOption(
+      str::RefreshRate, str::RefreshRateHelp, labels, values,
+      [values]
+      { return REFRESH_RATE > 0 ? NearestIndex(values, REFRESH_RATE) : 0; },
+      [values](int i)
+      { REFRESH_RATE = values[i]; Commit("RefreshRate", REFRESH_RATE, [] { ApplyRefreshRate(true); }); });
+}
+
 void AddAspectRatio()
 {
   NewOption(
@@ -354,6 +377,7 @@ void BuildOptions()
 
   buildPage = PAGE_GRAPHICS;
   AddFpsLimit();
+  AddRefreshRate();
   AddToggle(str::VSync, str::VSyncHelp, VSYNC_ENABLED, "EnableVSync", nullptr, 1);
   AddAspectRatio();
   AddHudLayout();

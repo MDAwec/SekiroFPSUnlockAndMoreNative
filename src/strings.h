@@ -145,6 +145,23 @@ inline const Text FpsLimitHelp = {L"Frame rate cap. 60 FPS is the game's default
 inline const Text Unlimited = {L"Unlimited", L"Illimité", L"Illimitato", L"Unbegrenzt", L"Ilimitado", L"Ilimitado", L"Bez limitu",
                                L"Без ограничения", L"無制限", L"무제한", L"无限制", L"無限制", L"ไม่จำกัด"};
 
+inline const Text RefreshRate = {L"Refresh Rate", L"Fréquence de rafraîchissement", L"Frequenza di aggiornamento", L"Bildwiederholrate", L"Frecuencia de actualización",
+                                 L"Taxa de atualização", L"Częstotliwość odświeżania", L"Частота обновления", L"リフレッシュレート", L"주사율", L"刷新率", L"更新率", L"อัตรารีเฟรช"};
+inline const Text RefreshRateHelp = {L"Refresh rate of the display in fullscreen. Auto leaves it to the graphics driver.",
+                                     L"Fréquence de l'écran en plein écran. Auto la laisse au pilote graphique.",
+                                     L"Frequenza dello schermo a schermo intero. Auto la lascia al driver grafico.",
+                                     L"Bildwiederholrate im Vollbild. Auto überlässt sie dem Grafiktreiber.",
+                                     L"Frecuencia de la pantalla en pantalla completa. Automático la deja al controlador gráfico.",
+                                     L"Taxa de atualização da tela em tela cheia. Automático deixa a escolha para o driver de vídeo.",
+                                     L"Częstotliwość odświeżania w trybie pełnoekranowym. Automatycznie pozostawia wybór sterownikowi grafiki.",
+                                     L"Частота обновления экрана в полноэкранном режиме. «Авто» оставляет выбор драйверу видеокарты.",
+                                     L"フルスクリーン時のリフレッシュレートです。自動ではグラフィックドライバーに任せます。",
+                                     L"전체 화면에서의 주사율입니다. 자동은 그래픽 드라이버에 맡깁니다.",
+                                     L"全屏时的刷新率。自动由显卡驱动决定。",
+                                     L"全螢幕時的更新率。自動由顯示卡驅動程式決定。",
+                                     L"อัตรารีเฟรชของจอในโหมดเต็มจอ อัตโนมัติจะให้ไดรเวอร์กราฟิกเลือก"};
+inline const Text Auto = {L"Auto", L"Auto", L"Auto", L"Auto", L"Automático", L"Automático", L"Automatycznie", L"Авто", L"自動", L"자동", L"自动", L"自動", L"อัตโนมัติ"};
+
 inline const Text VSync = {L"VSync", L"Synchronisation verticale", L"Sincronizzazione verticale", L"VSync", L"Sincronización vertical", L"Sincronização vertical",
                            L"Synchronizacja pionowa", L"Вертикальная синхронизация", L"垂直同期", L"수직 동기화", L"垂直同步", L"垂直同步", L"VSync"};
 inline const Text VSyncHelp = {L"Synchronizes presentation with the display.",

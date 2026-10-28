@@ -68,7 +68,7 @@ bool MidHook(uintptr_t offset, const uint8_t *original, size_t size, MidCallback
 float pictureWidth, pictureHeight, pictureAspect = NATIVE_ASPECT;
 
 bool PictureWider() { return pictureAspect > NATIVE_ASPECT + 0.001f; }
-// the HUD fixes are for a HUD on the 16:9 stage (kept at 16:9 or at the edges); a stretched HUD needs none of them
+// the awareness marker fixes are for a HUD on the 16:9 stage (kept at 16:9 or at the edges); a stretched one needs none
 bool Wider() { return HUD_LAYOUT != HUD_STRETCH && PictureWider(); }
 bool Narrower() { return HUD_LAYOUT != HUD_STRETCH && pictureAspect < NATIVE_ASPECT - 0.001f; }
 
@@ -81,8 +81,7 @@ void AnimationCulling(Ctx *ctx)
 
 // Scaleform movie placement, edx is the view scale mode: 1 ShowAll (keeps 16:9), 2 ExactFit (fills the viewport).
 // Movies are created with ShowAll, so the stretched HUD is made by switching the mode here, for every movie. The black
-// screen and the fade always fill the viewport. Without stretching, the vignettes are stretched over the whole screen
-// instead of a 16:9 box; xmm5 and xmm7 are the viewport width and height in twips (20 per pixel).
+// screen, the fade and the vignettes always fill the viewport. xmm5 and xmm7 are the viewport width and height in twips (20 per pixel).
 void HudViewport(Ctx *ctx)
 {
   if (HUD_LAYOUT == HUD_STRETCH && ctx->rdx == 1)
@@ -103,24 +102,12 @@ void HudViewport(Ctx *ctx)
     const uint32_t *resolution = (const uint32_t *)GetAbsoluteAddress(render_resolution_offset);
     if (fabsf(ctx->xmm[5][0] / 20.0f - resolution[0]) > 1 || fabsf(ctx->xmm[7][0] / 20.0f - resolution[1]) > 1)
       RelayoutHud();
-    HudMovieViewport(ctx->xmm[5][0], ctx->xmm[7][0]);
   }
-  else if (strstr(name, "nowloading"))
-    LoadingMovieViewport(ctx->xmm[5][0], ctx->xmm[7][0]);
+  MovieViewport(name, ctx->xmm[5][0], ctx->xmm[7][0]);
 
-  if (strstr(name, "01_910_fade.gfx") || strstr(name, "01_900_black.gfx"))
-  {
+  if (strstr(name, "01_910_fade.gfx") || strstr(name, "01_900_black.gfx") || strstr(name, "01_200_dyingeffect.gfx") ||
+      strstr(name, "01_201_stealtheffect.gfx"))
     ctx->rdx = 2;
-    return;
-  }
-
-  if ((!Wider() && !Narrower()) || (!strstr(name, "01_201_stealtheffect.gfx") && !strstr(name, "01_200_dyingeffect.gfx")))
-    return;
-
-  if (Wider())
-    ctx->xmm[5][0] = pictureHeight * NATIVE_ASPECT * 20.0f;
-  else
-    ctx->xmm[7][0] = pictureWidth / NATIVE_ASPECT * 20.0f;
 }
 
 // Awareness markers are positioned in 1080 high units with the 1920 wide stage centered, so their bounds are widened
