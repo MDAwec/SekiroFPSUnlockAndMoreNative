@@ -470,31 +470,23 @@ void ApplyDeathPenaltiesPatch()
 }
 
 // Autorotate
+// Only the automatic follow of the camera is patched. The stick turn further down the same function (pitch and yaw += stick * sensitivity * dt,
+// stores at 0x73e5e3 and 0x73e6d2) must be left alone: patching it, as was done before, also discarded the gamepad's camera stick.
 uintptr_t camAdjustPitchAddr;
-uintptr_t camAdjustPitchXYAddr;
 uintptr_t camAdjustYawZAddr;
-uintptr_t camAdjustYawXYAddr;
 uintptr_t camAdjustPitchCode;
-uintptr_t camAdjustPitchXYCode;
 uintptr_t camAdjustYawZCode;
-uintptr_t camAdjustYawXYCode;
 uint8_t camAdjustPitchOrigBytes[7];
-uint8_t camAdjustPitchXYOrigBytes[12];
 uint8_t camAdjustYawZAddrOrigBytes[8];
-uint8_t camAdjustYawXYAddrOrigBytes[8];
 void ApplyCamAutorotatePatch()
 {
   if (!INITIALIZED)
   {
     camAdjustPitchAddr = GetAbsoluteAddress(camadjust_pitch_offset);
-    camAdjustPitchXYAddr = GetAbsoluteAddress(camadjust_pitch_xy_offset);
     camAdjustYawZAddr = GetAbsoluteAddress(camadjust_yaw_z_offset) + 5;
-    camAdjustYawXYAddr = GetAbsoluteAddress(camadjust_yaw_xy_offset) + 5;
 
     ReadProcessMemory(GetCurrentProcess(), (LPVOID)camAdjustPitchAddr, camAdjustPitchOrigBytes, sizeof(camAdjustPitchOrigBytes), nullptr);
-    ReadProcessMemory(GetCurrentProcess(), (LPVOID)camAdjustPitchXYAddr, camAdjustPitchXYOrigBytes, sizeof(camAdjustPitchXYOrigBytes), nullptr);
     ReadProcessMemory(GetCurrentProcess(), (LPVOID)camAdjustYawZAddr, camAdjustYawZAddrOrigBytes, sizeof(camAdjustYawZAddrOrigBytes), nullptr);
-    ReadProcessMemory(GetCurrentProcess(), (LPVOID)camAdjustYawXYAddr, camAdjustYawXYAddrOrigBytes, sizeof(camAdjustYawXYAddrOrigBytes), nullptr);
 
     // Camera Pitch (Z-axis)
     constexpr uint8_t INJECT_CAMADJUST_PITCH_SHELLCODE[] = {
@@ -508,31 +500,13 @@ void ApplyCamAutorotatePatch()
         0xF3, 0x0F, 0x11, 0x86, 0x74, 0x01, 0x00, 0x00  // movss [rsi+0x174], xmm0
     };
 
-    // Camera Pitch (XY-axis)
-    constexpr uint8_t INJECT_CAMADJUST_PITCH_XY_SHELLCODE[] = {
-        0xF3, 0x0F, 0x10, 0x86, 0x70, 0x01, 0x00, 0x00, // movss xmm0, [rsi+0x170]
-        0xF3, 0x0F, 0x11, 0x00,                         // movss [rax], xmm0
-        0xF3, 0x0F, 0x10, 0x00,                         // movss xmm0, [rax]
-        0xF3, 0x0F, 0x11, 0x86, 0x70, 0x01, 0x00, 0x00  // movss [rsi+0x170], xmm0
-    };
-
-    // Camera Yaw (XY-axis)
-    constexpr uint8_t INJECT_CAMADJUST_YAW_XY_SHELLCODE[] = {
-        0xF3, 0x0F, 0x10, 0x86, 0x74, 0x01, 0x00, 0x00, // movss xmm0, [rsi+0x174]
-        0xF3, 0x0F, 0x11, 0x86, 0x74, 0x01, 0x00, 0x00  // movss [rsi+0x174], xmm0
-    };
-
     camAdjustPitchCode = InjectShellcodeWithJumpBack(camAdjustPitchAddr, INJECT_CAMADJUST_PITCH_SHELLCODE, sizeof(INJECT_CAMADJUST_PITCH_SHELLCODE), sizeof(camAdjustPitchOrigBytes), "Write cam adjust pitch code to allocated memory");
-    camAdjustPitchXYCode = InjectShellcodeWithJumpBack(camAdjustPitchXYAddr, INJECT_CAMADJUST_PITCH_XY_SHELLCODE, sizeof(INJECT_CAMADJUST_PITCH_XY_SHELLCODE), sizeof(camAdjustPitchXYOrigBytes), "Write cam adjust pitch XY code to allocated memory");
     camAdjustYawZCode = InjectShellcodeWithJumpBack(camAdjustYawZAddr, INJECT_CAMADJUST_YAW_Z_SHELLCODE, sizeof(INJECT_CAMADJUST_YAW_Z_SHELLCODE), sizeof(camAdjustYawZAddrOrigBytes), "Write cam adjust yaw Z code to allocated memory");
-    camAdjustYawXYCode = InjectShellcodeWithJumpBack(camAdjustYawXYAddr, INJECT_CAMADJUST_YAW_XY_SHELLCODE, sizeof(INJECT_CAMADJUST_YAW_XY_SHELLCODE), sizeof(camAdjustYawXYAddrOrigBytes), "Write cam adjust yaw XY code to allocated memory");
   }
 
   if (!INITIALIZED && !DISABLE_CAMERA_AUTOROTATE_ENABLED)
     return;
 
   WriteProtectedMemory(camAdjustPitchAddr, DISABLE_CAMERA_AUTOROTATE_ENABLED ? RelJmpBytes(7, (int32_t)(camAdjustPitchCode - (camAdjustPitchAddr + 5))).data() : camAdjustPitchOrigBytes, sizeof(camAdjustPitchOrigBytes), "Patch cam adjust pitch");
-  WriteProtectedMemory(camAdjustPitchXYAddr, DISABLE_CAMERA_AUTOROTATE_ENABLED ? RelJmpBytes(12, (int32_t)(camAdjustPitchXYCode - (camAdjustPitchXYAddr + 5))).data() : camAdjustPitchXYOrigBytes, sizeof(camAdjustPitchXYOrigBytes), "Patch cam adjust pitch XY");
   WriteProtectedMemory(camAdjustYawZAddr, DISABLE_CAMERA_AUTOROTATE_ENABLED ? RelJmpBytes(8, (int32_t)(camAdjustYawZCode - (camAdjustYawZAddr + 5))).data() : camAdjustYawZAddrOrigBytes, sizeof(camAdjustYawZAddrOrigBytes), "Patch cam adjust yaw Z");
-  WriteProtectedMemory(camAdjustYawXYAddr, DISABLE_CAMERA_AUTOROTATE_ENABLED ? RelJmpBytes(8, (int32_t)(camAdjustYawXYCode - (camAdjustYawXYAddr + 5))).data() : camAdjustYawXYAddrOrigBytes, sizeof(camAdjustYawXYAddrOrigBytes), "Patch cam adjust yaw XY");
 }

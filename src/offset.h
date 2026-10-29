@@ -12,8 +12,6 @@ constexpr uintptr_t resolution_pointer_offset = 0x1194d85;
 
 constexpr uintptr_t camadjust_pitch_offset = 0x73e056;
 constexpr uintptr_t camadjust_yaw_z_offset = 0x73e07c;
-constexpr uintptr_t camadjust_pitch_xy_offset = 0x73e5df;
-constexpr uintptr_t camadjust_yaw_xy_offset = 0x73e6cd;
 constexpr uintptr_t camreset_lockon_offset = 0x73dece;
 constexpr uintptr_t dragonrot_effect_offset = 0x11d383f;
 constexpr uintptr_t deathpenalties1_offset = 0x11d36c7;
