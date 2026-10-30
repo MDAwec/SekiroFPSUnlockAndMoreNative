@@ -257,16 +257,29 @@ bool Bounds(const GValue &clip, const GValue *space, double &left, double &top, 
   return ok;
 }
 
+// whether a clip covers the stage: a clip stretched before did; otherwise its bounds on the stage tell
+bool Covers(const GValue &clip, const GValue &root)
+{
+  double left, top, width, height;
+  return placed.count(std::make_pair(clip.data, std::string("width"))) ||
+         (Bounds(clip, &root, left, top, width, height) && left <= 20 && top <= 20 && left + width >= 1900 && top + height >= 1060);
+}
+
 // A backdrop (a clip that covers the stage) is stretched to cover the room on each side too: scaled by its width plus
 // twice the room, with its registration point moved so that its left edge goes out by the room. Its size and the
 // place of its registration point are taken back to what the movie set, from the stretch applied before.
+// Only the innermost clips that cover the stage are stretched: a clip whose position or size is set by script is no
+// longer animated by its timeline, alpha included, and the vignettes of the death screen (Begin, Loop, WaitEnd) fade
+// in by the alpha of the clip around the picture.
 bool StretchCovering(const GValue &clip, const GValue &root, Room room)
 {
-  double left, top, width, height;
-  // a clip stretched before covered the stage; otherwise its bounds on the stage tell
-  if (!placed.count(std::make_pair(clip.data, std::string("width"))) &&
-      (!Bounds(clip, &root, left, top, width, height) || left > 20 || top > 20 || left + width < 1900 || top + height < 1060))
+  if (!Covers(clip, root))
     return false;
+  bool inner = false;
+  ForEachChild(clip, [&](const GValue &child) { inner |= StretchCovering(child, root, room); });
+  if (inner)
+    return true;
+  double left, top, width, height;
   if (!Bounds(clip, nullptr, left, top, width, height) || width <= 0 || height <= 0)
     return false;
   double x = Number(clip, "x"), y = Number(clip, "y");

@@ -63,7 +63,8 @@ The menu objects are made by factories. To get from a movie to the code that dri
    `0x142AAD3A8`) keeps the wrapper of the movie root at +0x158.
 
 Classes with the same clip names exist: `FUN_140d902e0` (vtable `0x142AFAB00`, Update `0xD9CFA0`) also binds
-`Begin`, `WaitBegin`, `WaitBegin_TextEffect`, `WaitEnd`, but it is not the death screen. Go from the file name.
+`Begin`, `WaitBegin`, `WaitBegin_TextEffect`, `WaitEnd`, but it is not the death screen: it is `01_200_DyingEffect`,
+whose clips (`Loop/instance1`, ...) the game fades by alpha every frame. Go from the file name.
 
 ## Movies
 
@@ -73,7 +74,7 @@ Classes with the same clip names exist: `FUN_140d902e0` (vtable `0x142AFAB00`, U
 | `01_002_fe_saveicon` | Screen Edges: each root clip to its nearest edges | Corner icon |
 | `01_900_black`, `01_910_fade`, `01_200_dyingeffect`, `01_201_stealtheffect` | ExactFit always | Full screen fills and vignettes |
 | `02_903_nowloading2`, `02_904_nowloading3`, `02_905_nowloading_thanks`, `02_990_nowloading_userguide` | `instance1` (black, top left registration) stretched | Loading screen background |
-| `01_210_dead` | Backdrops stretched in its own Update hook (`0xD9CD90`), every frame while shown | Its timeline brings `WaitBegin/instance1` in |
+| `01_210_dead` | Backdrops (their innermost clips) stretched in its own Update hook (`0xD9CD90`), every frame while shown | Its timeline brings `WaitBegin/instance1` in |
 | `03_202_bonfire`, `02_280`-`02_284_getitem*`, `02_210_fullscreenmsgdialog`, `01_010`/`01_011`/`01_013_messagebox*`, `01_250_tutorialmessage`, `01_251_tutorialmsgdialog` | Unnamed clips that cover the stage stretched (found with getBounds) | Semi-transparent black behind menus and notifications |
 | `01_060_caption`, `01_061_talk`, `01_210` texts, other `02_*` / `03_*` menus, `05_*` title | Nothing | Centred content; stretching distorts it |
 
@@ -95,9 +96,13 @@ Centred: `MapName`, `ActionGuide`, `CautionText`, `TextEffect`, `TalkWindow`.
 `02_903_nowloading2`: `instance1` [0,0 1930x1090] black, `BackImage` [0,0 2172x1086] artwork, `Main` (1022, 496) text,
 `Gauge` (180, 475).
 
-`01_210_dead`: `WaitBegin` [0,0 1920x1080, alpha 0 until death] with `instance1` [0,0 1920x1080] the black, `instance2`
+`01_210_dead`: `WaitBegin` [0,0 1920x1080, alpha 0 until death] with `instance1` [0,0 1920x1080] the red vignette, `instance2`
 the kanji (802, 339, 322x276), `Text` (229, 656), `Text_3` (116, 850), `Stagnation` (`LifeCount`, `Crack/State_0-4`).
 The Update runs a state machine on `[+0xAB8]`, shows the root and plays a label through the wrapper at +0x170.
+`WaitBegin`, `Begin`, `Loop`, `WaitEnd` and `instance25` (the fade to black), all [0,0 1920x1080], each hold one
+unnamed clip and are faded in by their timeline, through the alpha of the outer clip. A clip whose `x`, `y`, `width` or
+`height` is set by script is no longer animated by its timeline, its alpha included, so only the innermost clips that
+cover the stage are stretched; stretching the outer ones kept the vignettes at alpha 0.
 
 `03_202_bonfire`: `instance1` [960,540 1920x1080, centred] the dimming, `Base`, `MenuTitle`, `InfoPanel`.
 `01_010_messagebox`: `instance1` [960,540 1920x1080], `ItemList`. `01_250_tutorialmessage`: `MessageWindow_0`,
