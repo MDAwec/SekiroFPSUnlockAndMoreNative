@@ -44,5 +44,9 @@ constexpr uintptr_t game_data_man_offset = 0x3D5AAC0; // GameDataMan pointer; +0
 constexpr uintptr_t game_language_offset = 0x3D9C868; // int32 locale of the game's texts, an index into jpnJP, engGB, fraFR, ... thaTH
 constexpr uintptr_t sound_volume_update_offset = 0x92F330; // (dt): once per frame, applies the volumes of the option data to the sound categories
 constexpr uintptr_t fullscreen_refreshrate_num = 0x1B62D3F;
+constexpr uintptr_t swapchain_create_call_offset = 0x1B624F4; // mov rax,[rcx]; call [rax+50h]: IDXGIFactory::CreateSwapChain of the game's swap chain
+constexpr uintptr_t swapchain_resize_call_offset = 0x1B62C1E; // the stack arguments and call [rdi+68h] of IDXGISwapChain::ResizeBuffers
+constexpr uintptr_t hdr_active_offset = 0x24C61C0;            // (swap chain): whether the HDR output is on, the game's HDR rendering follows it
+constexpr uintptr_t options_hdr_row_offset = 0xCD9030;        // (dialog): state of the HDR row of the graphics settings, locked unless fullscreen
 
 inline uintptr_t is_game_in_loading_addr;

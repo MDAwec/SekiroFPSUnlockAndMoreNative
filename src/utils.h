@@ -27,6 +27,7 @@ bool IsValidReadPtr(uintptr_t addr, size_t size);
 bool WriteProtectedMemory(uintptr_t address, const void *data, size_t size, const char *msg);
 uintptr_t GetAbsoluteAddress(uintptr_t offset);
 uintptr_t DereferenceStaticX64Pointer(uintptr_t instructionAddress, int instructionLength);
+bool CodeReady(LPVOID target, const uint8_t *expected, size_t size);
 uintptr_t AllocateMemoryNearAddress(uintptr_t target, size_t size, bool executable = false);
 uintptr_t InjectShellcodeWithJumpBack(uintptr_t targetAddr, const uint8_t *shellcode, size_t shellcodeSize, size_t patchSize, const char *msg);
 std::vector<uint8_t> RelJmpBytes(int length, int32_t relative);
@@ -65,6 +66,7 @@ inline int FPSUNLOCK_ENABLED;
 inline int AUTOLOOT_ENABLED;
 inline int INTROSKIP_ENABLED;
 inline int BORDERLESS_ENABLED;
+inline int WINDOWED_HDR_ENABLED;
 inline int ASPECT_RATIO_MODE;
 // HUD Layout (ini StretchHud): kept at 16:9, stretched over the whole picture, or its elements at the picture edges
 enum HudLayout

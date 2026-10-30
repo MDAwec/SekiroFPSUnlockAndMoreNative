@@ -43,15 +43,6 @@ uint64_t DetourVolumeUpdate(float dt)
   }
   return fnVolumeUpdate(dt);
 }
-
-// sekiro.exe is decrypted by its Steam stub after the DLL is loaded, the code is executable again once it is done
-bool CodeReady(LPVOID target, const uint8_t *expected, size_t size)
-{
-  MEMORY_BASIC_INFORMATION mbi;
-  return VirtualQuery(target, &mbi, sizeof(mbi)) == sizeof(mbi) &&
-         (mbi.Protect & (PAGE_EXECUTE | PAGE_EXECUTE_READ | PAGE_EXECUTE_READWRITE | PAGE_EXECUTE_WRITECOPY)) &&
-         memcmp(target, expected, size) == 0;
-}
 } // namespace
 
 void InstallSoundFix()
