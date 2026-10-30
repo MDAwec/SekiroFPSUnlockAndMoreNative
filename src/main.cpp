@@ -1,5 +1,6 @@
 #include "MinHook.h"
 #include "fixes.h"
+#include "hdr.h"
 #include "menu.h"
 #include "offset.h"
 #include "patches.h"
@@ -122,6 +123,8 @@ DWORD WINAPI InitThread(LPVOID lpParam)
   InstallCrashLogger();
   // The game applies its default sound volumes long before it has finished starting up
   InstallSoundFix();
+  // The swap chain is created while the game starts up
+  InstallWindowedHdr();
 
   // Nothing is hooked or patched before the game finished starting up
   while (!(GAME_WINDOW = GetGameWindow()))

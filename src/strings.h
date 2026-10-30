@@ -97,19 +97,19 @@ inline const Text CamAutorotate = {L"Disable Camera Autorotate", L"Désactiver l
                                    L"Automatische Kameradrehung deaktivieren", L"Desactivar giro automático de cámara", L"Desativar rotação automática da câmera",
                                    L"Wyłącz automatyczny obrót kamery", L"Отключить автоповорот камеры", L"カメラ自動回転を無効化", L"카메라 자동 회전 끄기",
                                    L"禁用镜头自动旋转", L"停用鏡頭自動旋轉", L"ปิดการหมุนกล้องอัตโนมัติ"};
-inline const Text CamAutorotateHelp = {L"Disables automatic camera rotation while moving. Meant for mouse users.",
-                                       L"Désactive la rotation automatique de la caméra en mouvement. Destiné aux joueurs à la souris.",
-                                       L"Disattiva la rotazione automatica della telecamera durante il movimento. Pensato per chi usa il mouse.",
-                                       L"Deaktiviert die automatische Kameradrehung beim Laufen. Für Mausspieler gedacht.",
-                                       L"Desactiva el giro automático de la cámara al moverse. Pensado para jugar con ratón.",
-                                       L"Desativa a rotação automática da câmera ao se mover. Pensado para quem usa mouse.",
-                                       L"Wyłącza automatyczny obrót kamery podczas ruchu. Przeznaczone dla graczy używających myszy.",
-                                       L"Отключает автоматический поворот камеры при движении. Для игры на мыши.",
-                                       L"移動中のカメラの自動回転を無効にします。マウス操作向けです。",
-                                       L"이동 중 카메라 자동 회전을 끕니다. 마우스 사용자용입니다.",
-                                       L"禁用移动时的镜头自动旋转。适合使用鼠标的玩家。",
-                                       L"停用移動時的鏡頭自動旋轉。適合使用滑鼠的玩家。",
-                                       L"ปิดการหมุนกล้องอัตโนมัติขณะเคลื่อนที่ เหมาะสำหรับผู้เล่นที่ใช้เมาส์"};
+inline const Text CamAutorotateHelp = {L"Disables automatic camera rotation while moving.",
+                                       L"Désactive la rotation automatique de la caméra en mouvement.",
+                                       L"Disattiva la rotazione automatica della telecamera durante il movimento.",
+                                       L"Deaktiviert die automatische Kameradrehung beim Laufen.",
+                                       L"Desactiva el giro automático de la cámara al moverse.",
+                                       L"Desativa a rotação automática da câmera ao se mover.",
+                                       L"Wyłącza automatyczny obrót kamery podczas ruchu.",
+                                       L"Отключает автоматический поворот камеры при движении.",
+                                       L"移動中のカメラの自動回転を無効にします。",
+                                       L"이동 중 카메라 자동 회전을 끕니다.",
+                                       L"禁用移动时的镜头自动旋转。",
+                                       L"停用移動時的鏡頭自動旋轉。",
+                                       L"ปิดการหมุนกล้องอัตโนมัติขณะเคลื่อนที่"};
 
 inline const Text Fov = {L"Field of View", L"Champ de vision", L"Campo visivo", L"Sichtfeld", L"Campo de visión", L"Campo de visão", L"Pole widzenia",
                          L"Поле зрения", L"視野角", L"시야각", L"视野", L"視野", L"มุมมองภาพ"};
