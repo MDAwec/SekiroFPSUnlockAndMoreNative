@@ -2,6 +2,11 @@
 
 Each release needs a `## <version>` section here matching `VERSION`. The release workflow publishes that section as the GitHub release notes and fails if it is missing.
 
+## 1.3.0
+
+- HDR works in windowed and borderless mode, not only in exclusive fullscreen, when HDR is turned on for the display in Windows. The game's swap chain is then created with the flip model and shown with the HDR10 colour space, also in fullscreen; without Windows HDR nothing changes. `EnableWindowedHdr = 0` in the INI turns it off, e.g. if another mod that hooks the swap chain does not get along with it.
+- Disable Camera Autorotate no longer takes away the gamepad's camera stick: small tilts turned nothing and a full tilt only turned the camera after a delay. It now works the same with a gamepad and a mouse.
+
 ## 1.2.0
 
 - The mod's settings rows are shown in the game's language: English, French, Italian, German, Spanish, Portuguese (Brazil), Polish, Russian, Japanese, Korean, Simplified Chinese, Traditional Chinese or Thai.
