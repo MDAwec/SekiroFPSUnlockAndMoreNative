@@ -2,6 +2,10 @@
 
 Each release needs a `## <version>` section here matching `VERSION`. The release workflow publishes that section as the GitHub release notes and fails if it is missing.
 
+## 1.4.0
+
+- The red vignette and the fade to black of the death screen show again with HUD Layout 16:9 or Screen Edges on a picture wider than 16:9 (e.g. 21:9 or Fill Screen on an ultrawide); they only showed with Stretch. Their backgrounds still cover the whole picture.
+
 ## 1.3.0
 
 - HDR works in windowed and borderless mode, not only in exclusive fullscreen, when HDR is turned on for the display in Windows. The game's swap chain is then created with the flip model and shown with the HDR10 colour space, also in fullscreen; without Windows HDR nothing changes. `EnableWindowedHdr = 0` in the INI turns it off, e.g. if another mod that hooks the swap chain does not get along with it.
